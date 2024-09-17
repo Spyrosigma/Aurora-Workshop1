@@ -22,22 +22,46 @@ export async function connectWithMetamask() {
 connectWithMetamask();
 
 // Utility to create a new user
-export async function createUser() {
+export async function createUser(name, favNumber) {
+    await connectWithMetamask();
+    const contract = new ethers.Contract(contractAddress, contractAbi, signer)
+    const tx = await contract.createUser(name, favNumber)
+    console.log("user Create Transaction:", tx)
+    return tx
 
 }
 
 // Utility to get a user's details
-export async function getUser() {
-
+export async function getUser(userId) {
+    await connectWithMetamask();
+    const contract = new ethers.Contract(contractAddress, contractAbi, provider)
+    const user = await contract.getUser(userId)
+    console.log("user Details:", user)
+    return {
+        id: user[0].toString(),
+        name: user[1],
+        favNumber: user[2].toString()
+    }
 }
 
 // Utility to delete a user
 export async function deleteUser() {
+    await connectWithMetamask(); 
+    const contract = new ethers.Contract(contractAddress, contractAbi, signer)
+    const tx = contract.deleteUser(userId)
+    console.log("Deleted user Transaction:", tx)
+    return tx
+
 
 }
 
 // Utility to update a user's name and favorite number
-export async function updateUser() {
+export async function updateUser(userId, name, favNumber) {
+    await connectWithMetamask(); 
+    const contract = new ethers.Contract(contractAddress, contractAbi, signer)
+    const tx = await contract.updateUser(userId, name, favNumber)
+    console.log("Updated user Transaction:", tx)
+    return tx
 
 }
 
